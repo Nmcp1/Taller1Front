@@ -1,15 +1,17 @@
-import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import LecturaForm from "./components/LecturaForm";
+import LecturaView from "./components/LecturaView";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <>
-    <div className="row">
-      <h1>Base Certamen2</h1>
-    </div>
-    </>
-  )
-}
+    <BrowserRouter>
+      <Navbar />
 
-export default App
+      <Routes>
+        <Route path="/registrar" element={<LecturaForm />} />
+        <Route path="/ver-registro" element={<LecturaView />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
