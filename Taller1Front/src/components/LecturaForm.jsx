@@ -1,17 +1,36 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import { Editor } from 'primereact/editor';
 import { InputNumber } from 'primereact/inputnumber';
 import { RadioButton } from 'primereact/radiobutton';
 import { Button } from 'primereact/button';
+import {Toast} from 'primereact/toast';
         
         
 
 function LecturaForm({onCreateLectura = () =>{}}) {
+  const toast = useRef(null);
   const handleClick=()=>{
     const direccion2 = direccion.replace(/<[^>]+>/g, "").trim();
     const lecturaObj = {fecha,medidor,direccion2,valor,tipoMedida};
+    let errores = [];
+    if (!fecha){
+        errores.push("Fecha no válida");
+    };
+    if (!direccion2){
+        errores.push("Direccion no válida");
+    };
+    if (!valor){
+        errores.push("Valor no válido");
+    };
+
+    if (errores.length>0){
+        console.log(errores)
+        const msg = "ERROR:"+errores.join("|")
+        toast.current.show({severity: "error", summary: msg});
+        return;
+    };
     console.log(lecturaObj);
   }
   const medidores = ["01","02","03","04","05","06","07","08","09","10"];
@@ -25,12 +44,11 @@ function LecturaForm({onCreateLectura = () =>{}}) {
 
   return (
     <div className="row">
-        <div className="col-1"></div>
-        <div className="col-5">
+        <Toast ref={toast} position="top-left" />
 
             <div className="row">
                 <label>Fecha</label>
-                <Calendar value={fecha} onChange={(e) => setFecha(e.value)} dateFormat="dd-MM-yyyy HH:mm" />
+                <Calendar value={fecha} onChange={(e) => setFecha(e.value)} dateFormat="dd-MM-yy"  showTime/>
             </div>
 
             <div className="row">
@@ -72,8 +90,7 @@ function LecturaForm({onCreateLectura = () =>{}}) {
             <div className="row">
                 <Button onClick={handleClick} rounded severity='info' label='Registrar Lectura'  ></Button>
             </div>
-        
-        </div>
+
     </div>
   )
 }
