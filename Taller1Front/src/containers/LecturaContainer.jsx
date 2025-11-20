@@ -3,13 +3,19 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import LecturaForm from "../components/LecturaForm";
 import LecturaView from "../components/LecturaView";
-import { createLectura, getLecturas } from '../services/LecturaService';
+import { createLectura, deleteLectura, getLecturas } from '../services/LecturaService';
 
 
 function LecturaContainer() {
   const [lecturaData, setLecturaData] = useState([]);
   const handleCreate=(lectura)=>{
     createLectura(lectura);
+    const data = getLecturas();
+    setLecturaData(data);
+  }
+
+  const handleDelete=(id)=>{
+    deleteLectura(id);
     const data = getLecturas();
     setLecturaData(data);
   }
@@ -26,7 +32,7 @@ function LecturaContainer() {
 
       <Routes>
         <Route path="/registrar" element={<LecturaForm onCreateLectura={handleCreate}></LecturaForm>} />
-        <Route path="/ver-registro" element={<LecturaView lecturaData={lecturaData}></LecturaView>} />
+        <Route path="/ver-registro" element={<LecturaView lecturaData={lecturaData} onDeleteLectura={handleDelete}></LecturaView>} />
       </Routes>
     </BrowserRouter>
     </div>

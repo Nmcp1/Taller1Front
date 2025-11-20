@@ -4,7 +4,7 @@ import { Column } from "primereact/column";
 import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
 
-function LecturaView({lecturaData}) {
+function LecturaView({lecturaData, onDeleteLectura=()=>{}}) {
   const [lecturas, setLecturas] = useState([]);
   const [filteredLecturas, setFilteredLecturas] = useState([]);
   const [tipoFiltro, setTipoFiltro] = useState("ALL");
@@ -18,7 +18,7 @@ function LecturaView({lecturaData}) {
 
     setLecturas(lecturaData);
     setFilteredLecturas(lecturaData);
-  }, []);
+  }, [lecturaData]);
 
   useEffect(() => {
     if (tipoFiltro === "ALL") {
@@ -29,8 +29,10 @@ function LecturaView({lecturaData}) {
   }, [tipoFiltro, lecturas]);
 
   const eliminarLectura = (id) => {
-    const updated = lecturas.filter(l => l.id !== id);
-    setLecturas(updated);
+    console.log(id);
+    onDeleteLectura(id);
+    setLecturas(lecturaData);
+
   };
 
   const accionesTemplate = (rowData) => (

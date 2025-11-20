@@ -78,9 +78,9 @@ function LecturaForm({onCreateLectura = () =>{}}) {
                         <RadioButton
                             inputId={item.key}
                             name="tipoMedida"
-                            value={item.label}              // <-- ahora es string
+                            value={item.label}
                             onChange={(e) => setTipoMedida(e.value)}
-                            checked={tipoMedida === item.label} // <-- comparar strings
+                            checked={tipoMedida === item.label}
                         />
                         <label htmlFor={item.key} className="ml-2">
                             {item.label}

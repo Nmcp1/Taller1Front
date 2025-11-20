@@ -1,4 +1,5 @@
 const localKey = "lectura_list_data";
+let contador_id = 1;
 
 const createLectura = (lectura) => {
     let lista = [];
@@ -6,6 +7,8 @@ const createLectura = (lectura) => {
     if(data != null){
         lista = JSON.parse(data);
     }
+    lectura.id = contador_id;
+    contador_id +=1;
     lista = [...lista, lectura];
     console.log(lectura)
     localStorage.setItem(localKey, JSON.stringify(lista));
