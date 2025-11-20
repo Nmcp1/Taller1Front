@@ -1,21 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
+import { Toast } from "primereact/toast";
 
-function LecturaView({lecturaData, onDeleteLectura=()=>{}}) {
+function LecturaView({ lecturaData, onDeleteLectura = () => {} }) {
   const [lecturas, setLecturas] = useState([]);
   const [filteredLecturas, setFilteredLecturas] = useState([]);
   const [tipoFiltro, setTipoFiltro] = useState("ALL");
 
-  useEffect(() => {
-    const datosBase = [
-      { id: 1, fecha: "2024-11-20", hora: "14:22", medidor: "01", tipo: "kW", valor: 150 },
-      { id: 2, fecha: "2024-11-20", hora: "10:10", medidor: "02", tipo: "W", valor: 930 },
-      { id: 3, fecha: "2024-11-19", hora: "09:00", medidor: "03", tipo: "C", valor: 22 }
-    ];
+  const toast = useRef(null);
 
+  useEffect(() => {
     setLecturas(lecturaData);
     setFilteredLecturas(lecturaData);
   }, [lecturaData]);
@@ -24,15 +21,20 @@ function LecturaView({lecturaData, onDeleteLectura=()=>{}}) {
     if (tipoFiltro === "ALL") {
       setFilteredLecturas(lecturas);
     } else {
-      setFilteredLecturas(lecturas.filter(l => l.tipo === tipoFiltro));
+      setFilteredLecturas(lecturas.filter((l) => l.tipo === tipoFiltro));
     }
   }, [tipoFiltro, lecturas]);
 
   const eliminarLectura = (id) => {
-    console.log(id);
     onDeleteLectura(id);
     setLecturas(lecturaData);
 
+    toast.current.show({
+      severity: "success",
+      summary: "Listo",
+      detail: "La lectura se borró con éxito",
+      life: 1800,
+    });
   };
 
   const accionesTemplate = (rowData) => (
@@ -51,16 +53,12 @@ function LecturaView({lecturaData, onDeleteLectura=()=>{}}) {
     { label: "Temperatura", value: "C" }
   ];
 
-  const valorTemplate = (rowData) => {
-    const unidad =
-      rowData.tipo === "Kilowatts" ? "kW" :
-      rowData.tipo === "Watts" ? "W" :
-      rowData.tipo === "Temperatura" ? "C" : "";
-    return `${rowData.valor} ${unidad}`;
-  };
+  const valorTemplate = (rowData) => `${rowData.valor} ${rowData.tipo}`;
 
   return (
     <div className="p-4">
+      <Toast ref={toast} position="bottom-right" />
+
       <div className="flex gap-3 mb-3">
         <Dropdown
           value={tipoFiltro}
@@ -74,7 +72,7 @@ function LecturaView({lecturaData, onDeleteLectura=()=>{}}) {
         <Column field="fecha" header="Fecha" sortable />
         <Column field="hora" header="Hora" />
         <Column field="medidor" header="Medidor" />
-        <Column field="tipo" header="tipo" />
+        <Column field="tipo" header="Tipo" />
         <Column header="Valor" body={valorTemplate} />
         <Column header="Acciones" body={accionesTemplate} />
       </DataTable>

@@ -31,10 +31,17 @@ $primary-color: #5C80BC;
     span,
     .pi {
       color: white !important;
+      transition: color 0.2s ease;
     }
 
+    /* HOVER */
     &:hover {
       background: rgba(255, 255, 255, 0.10) !important;
+
+      span,
+      .pi {
+        color: $primary-color !important; 
+      }
     }
   }
 
@@ -47,11 +54,4 @@ $primary-color: #5C80BC;
       color: white !important;
     }
   }
-}
-
-.filters-bar {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.2rem 1.7rem 0.8rem 1.7rem; 
 }

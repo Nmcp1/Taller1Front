@@ -26,16 +26,16 @@ function LecturaContainer() {
   }, []);
 
   return (
-    <div>
-    <BrowserRouter>
-      <Navbar />
+    <>
+      <BrowserRouter>
+        <Navbar />
 
-      <Routes>
-        <Route path="/registrar" element={<LecturaForm onCreateLectura={handleCreate}></LecturaForm>} />
-        <Route path="/ver-registro" element={<LecturaView lecturaData={lecturaData} onDeleteLectura={handleDelete}></LecturaView>} />
-      </Routes>
-    </BrowserRouter>
-    </div>
+        <Routes>
+          <Route path="/registrar" element={<LecturaForm onCreateLectura={handleCreate} />} />
+          <Route path="/ver-registro" element={<LecturaView lecturaData={lecturaData} onDeleteLectura={handleDelete} />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   )
 }
 
