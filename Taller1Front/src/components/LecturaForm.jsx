@@ -13,7 +13,9 @@ function LecturaForm({onCreateLectura = () =>{}}) {
   const toast = useRef(null);
   const handleClick=()=>{
     const direccion2 = direccion.replace(/<[^>]+>/g, "").trim();
-    const lecturaObj = {fecha,medidor,direccion2,valor,tipoMedida};
+    //pasar la fecha a formato chile
+    const fechaChile = new Date(fecha.getTime() - 3 * 60 * 60 * 1000).toISOString().slice(0,19) + "-03:00";
+    const lecturaObj = {fecha:fechaChile,medidor,direccion:direccion2,valor,tipoMedida};
     let errores = [];
     if (!fecha){
         errores.push("Fecha no válida");
@@ -31,10 +33,11 @@ function LecturaForm({onCreateLectura = () =>{}}) {
         toast.current.show({severity: "error", summary: msg});
         return;
     };
+    onCreateLectura(lecturaObj);
     console.log(lecturaObj);
   }
   const medidores = ["01","02","03","04","05","06","07","08","09","10"];
-    const tipoMedidas = [{ key: 1, label: "Kilowatts"},{ key: 2, label: "Watts"},{ key: 3, label: "Temperatura"}];
+    const tipoMedidas = [{ key: 1, label: "KiloWatts"},{ key: 2, label: "Watts"},{ key: 3, label: "Temperatura"}];
 
   const [fecha,setFecha] = useState("");
   const [medidor,setMedidor] = useState(medidores[0]);

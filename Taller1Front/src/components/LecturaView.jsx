@@ -4,7 +4,7 @@ import { Column } from "primereact/column";
 import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
 
-function LecturaView() {
+function LecturaView({lecturaData}) {
   const [lecturas, setLecturas] = useState([]);
   const [filteredLecturas, setFilteredLecturas] = useState([]);
   const [tipoFiltro, setTipoFiltro] = useState("ALL");
@@ -16,8 +16,8 @@ function LecturaView() {
       { id: 3, fecha: "2024-11-19", hora: "09:00", medidor: "03", tipo: "C", valor: 22 }
     ];
 
-    setLecturas(datosBase);
-    setFilteredLecturas(datosBase);
+    setLecturas(lecturaData);
+    setFilteredLecturas(lecturaData);
   }, []);
 
   useEffect(() => {

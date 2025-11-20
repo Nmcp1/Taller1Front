@@ -7,15 +7,33 @@ const createLectura = (lectura) => {
         lista = JSON.parse(data);
     }
     lista = [...lista, lectura];
+    console.log(lectura)
     localStorage.setItem(localKey, JSON.stringify(lista));
 };
 
-const getLecturas = ()=> {
+const getLecturas = () => {
     const data = localStorage.getItem(localKey);
-    if (data != null) {
-        return JSON.parse(data);
+    if (!data) {
+        return [];
     }
-    return [];
+    const lista = JSON.parse(data);
+    const tipos = {"KiloWatts":"kW","Watts":"W","Temperatura":"C"};
+    const listaFormateada = lista.map((dato) => {
+        if (!dato.fecha) return dato;
+        //"2025-11-03T23:27:00-03:00"
+        //"012345678901234567890123"
+        const fecha = dato.fecha.slice(0,10); // ["2025-11-08"]
+        const hora = dato.fecha.slice(11,16); //["01:53"]
+        const tipo2 = tipos[dato.tipoMedida]
+        return {
+            ...dato,
+            fecha: fecha, // "2025-11-08"
+            hora: hora,       // "01:53"
+            tipo: tipo2
+        };
+    });
+
+    return listaFormateada;
 };
 
 const deleteLectura = (id) => {
